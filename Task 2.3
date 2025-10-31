@@ -1,0 +1,35 @@
+#include <avr/io.h>
+
+void setup() {
+  Serial.begin(9600);
+
+  uint8_t R16, R17, R18;
+  uint8_t SREG_copy;
+  uint8_t Z_flag, C_flag;
+
+  asm volatile(
+    "ldi r16, 50             \n\t"
+    "ldi r17, 200            \n\t"
+    "sub r16, r17            \n\t"
+    "mov r18, r16            \n\t"
+    "in %[sreg], __SREG__    \n\t"
+    : [sreg] "=r" (SREG_copy)
+    :
+    : "r16", "r17", "r18"
+  );
+
+  Z_flag = (SREG_copy >> 1) & 1;
+  C_flag = SREG_copy & 1;
+
+  Serial.print("R18 = ");
+  Serial.println(R18);
+  Serial.print("Z = ");
+  Serial.println(Z_flag);
+  Serial.print("C = ");
+  Serial.println(C_flag);
+
+  while(1);
+}
+
+void loop() {
+}
