@@ -1,0 +1,37 @@
+#include <avr/io.h>
+#include <util/delay.h>
+
+#define BUTTON 2
+#define EEPROM_ADDR 0
+
+uint8_t counter;
+
+void setup() {
+  Serial.begin(9600);
+  DDRD &= ~(1 << BUTTON);
+  PORTD |= (1 << BUTTON);
+  while (EECR & (1 << EEPE));
+  EEAR = EEPROM_ADDR;
+  EECR |= (1 << EERE);
+  counter = EEDR;
+  Serial.print("Counter starts at: ");
+  Serial.println(counter);
+}
+
+void loop() {
+  if (!(PIND & (1 << BUTTON))) {
+    _delay_ms(50);
+    if (!(PIND & (1 << BUTTON))) {
+      counter++;
+      Serial.print("Counter = ");
+      Serial.println(counter);
+      while (EECR & (1 << EEPE));
+      EEAR = EEPROM_ADDR;
+      EEDR = counter;
+      EECR |= (1 << EEMPE);
+      EECR |= (1 << EEPE);
+      while (!(PIND & (1 << BUTTON)));
+    }
+  }
+}
+
