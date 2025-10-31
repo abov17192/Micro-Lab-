@@ -1,0 +1,18 @@
+void setup() {
+  DDRD |= (1 << PD6) | (1 << PD5);
+  DDRB |= (1 << PB3);
+
+  TCCR0A = (1 << WGM00) | (1 << WGM01) | (1 << COM0A1) | (1 << COM0B1);
+  TCCR0B = (1 << CS00);
+
+  TCCR2A = (1 << WGM20) | (1 << WGM21) | (1 << COM2A1);
+  TCCR2B = (1 << CS20);
+
+  OCR0A = 77;
+  OCR0B = 128;
+  OCR2A = 204;
+}
+
+void loop() {
+}
+
