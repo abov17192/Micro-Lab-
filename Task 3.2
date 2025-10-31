@@ -1,0 +1,25 @@
+void setup() {
+  delay(2000);
+  Serial.begin(9600);
+
+  uint8_t sum;
+
+  asm volatile (
+    "ldi r16, 1        \n\t"
+    "ldi r17, 0        \n\t"
+    "ldi r18, 11       \n\t"
+    "sum_loop:         \n\t"
+    "add r17, r16      \n\t"
+    "inc r16           \n\t"
+    "cp r16, r18       \n\t"
+    "brne sum_loop     \n\t"
+    "mov %0, r17       \n\t"
+    : "=r" (sum)
+    :
+    : "r16", "r17", "r18"
+  );
+
+  Serial.println(sum);
+}
+
+void loop() {}
