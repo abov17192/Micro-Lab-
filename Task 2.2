@@ -1,0 +1,26 @@
+#include <avr/io.h>
+
+void setup() {
+  Serial.begin(9600);
+
+  uint8_t R16, R17, R18;
+
+  asm volatile(
+    "ldi r16, 0b00000101      \n\t"
+    "ldi r17, 0b00001000      \n\t"
+    "clr r18                  \n\t"
+    "add r18, r16             \n\t"
+    "add r18, r17             \n\t"
+    "mov %[res], r18          \n\t"
+    : [res] "=r" (R18)
+    :
+    : "r16", "r17", "r18"
+  );
+
+  Serial.print("Task 2 - Addition Result (R18) = ");
+  Serial.println(R18);
+}
+
+void loop() {
+}
+
