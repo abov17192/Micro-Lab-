@@ -1,0 +1,29 @@
+void setup() {
+  DDRB |= (1 << DDB5);   // Set PB5 (pin 13) as output
+}
+
+void loop() {
+  //  METHOD 1: 
+  PORTB = 0b00100000;    // LED ON  (binary)
+  delay(300);
+  PORTB = 0x00;          // LED OFF (hex)
+  delay(300);
+
+  // METHOD 2: 
+  PORTB |=  (1 << PORTB5);   // LED ON
+  delay(300);
+  PORTB &= ~(1 << PORTB5);   // LED OFF
+  delay(300);
+
+  // METHOD 3: 
+  PORTB ^= (1 << PORTB5);    // Toggle LED state
+  delay(300);
+  PORTB ^= (1 << PORTB5);    // Toggle again
+  delay(300);
+
+  //METHOD 4: 
+  PORTB = (1 << (5));        // Shift bit to PB5 position → LED ON
+  delay(300);
+  PORTB = (0 << (5));        // Clear bit → LED OFF
+  delay(300);
+}
